@@ -8,7 +8,7 @@ const NAME_MIN_LENGTH  = 3;
 
 class User {
   static getUser(id) {
-    const foundUser = usersDB.filter((user) => user._id === id)[0];
+    const foundUser = usersDB.find((user) => user._id === id);
     if(!foundUser) 
       throw ["can not find user with that id"];
     else
