@@ -24,6 +24,14 @@ class User {
     return user;
   }
 
+  static deleteUser(id) {
+    const orignalLength = usersDB.length;
+
+    usersDB = usersDB.filter((user) => user._id !== id);
+    if(orignalLength === usersDB.length)
+      throw ["can not find user with that id"];
+  }
+
   static sanitizeName(name) {
     return name.replace(/\s+/g,' ').trim();
   }

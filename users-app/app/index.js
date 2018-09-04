@@ -1,6 +1,6 @@
-const { json, send }               = require('micro');
-const { router, get, post, patch } = require('microrouter');
-const { User, usersDB }            = require('./user.js');
+const { json, send }                    = require('micro');
+const { router, get, post, patch, del } = require('microrouter');
+const { User, usersDB }                 = require('./user.js');
 
 function sendOutput(res, fn) {
   try {
@@ -21,5 +21,9 @@ module.exports = router(
   patch('/users/:id', async (req, res) => {
     const body = await json(req);
     sendOutput(res, () =>  User.updateUser(req.params.id, body.user));
+  }),
+
+  del('/users/:id', async (req, res) => {
+    sendOutput(res, () => User.deleteUser(req.params.id));
   })
 );
