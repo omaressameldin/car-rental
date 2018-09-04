@@ -9,4 +9,13 @@ services:
       - ./users-app/app:/usr/src/app
     ports:
       - "15000:3000" 
+  reply-concept-cars:
+    container_name: cars-app
+    build: ./cars-app/.
+    image: cars-app
+    restart: on-failure
+    volumes:
+      - ./cars-app/app:/usr/src/app
+    ports:
+      - "15001:3000"       
     command: npm run dev
