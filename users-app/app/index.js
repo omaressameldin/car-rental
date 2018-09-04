@@ -2,13 +2,20 @@ const { json, send }        = require('micro');
 const { router, get, post } = require('microrouter');
 const { User, usersDB }     = require('./user.js');
 
+function sendOutput(res, fn) {
+  try {
+    send(res, 200, fn());
+  } catch (err) {
+    send(res, 500, {errors: err})
+  }
+}
+
 module.exports = router(
+  get('/users/:id', (req, res) => {
+    sendOutput(res, () => User.getUser(req.params.id));
+  }),
   post('/users', async (req, res) => {
-    try {
-      const body = await json(req);
-      send(res, 200, new User(body.user));
-    } catch (err) {
-      send(res, 500, {errors: err})
-    }
+    const body = await json(req);
+    sendOutput(res, () =>  new User(body.user));
   })
-)
+);
