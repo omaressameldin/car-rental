@@ -11,13 +11,19 @@ function sendOutput(res, fn) {
 }
 
 module.exports = router(
+  get('/users', (_, res) => {
+    sendOutput(res, () =>{ return {uesrs: usersDB} });
+  }),
+
   get('/users/:id', (req, res) => {
     sendOutput(res, () => User.getUser(req.params.id));
   }),
+
   post('/users', async (req, res) => {
     const body = await json(req);
     sendOutput(res, () =>  new User(body.user));
   }),
+
   patch('/users/:id', async (req, res) => {
     const body = await json(req);
     sendOutput(res, () =>  User.updateUser(req.params.id, body.user));
