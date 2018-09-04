@@ -1,6 +1,6 @@
-const { json, send }        = require('micro');
-const { router, get, post } = require('microrouter');
-const { User, usersDB }     = require('./user.js');
+const { json, send }               = require('micro');
+const { router, get, post, patch } = require('microrouter');
+const { User, usersDB }            = require('./user.js');
 
 function sendOutput(res, fn) {
   try {
@@ -17,5 +17,9 @@ module.exports = router(
   post('/users', async (req, res) => {
     const body = await json(req);
     sendOutput(res, () =>  new User(body.user));
+  }),
+  patch('/users/:id', async (req, res) => {
+    const body = await json(req);
+    sendOutput(res, () =>  User.updateUser(req.params.id, body.user));
   })
 );
