@@ -15,23 +15,68 @@ class User {
       return foundUser;
   }
 
+  static updateUser(_id, params) {
+    let user = User.getUser(_id);
+
+    user.buildUser({...user, ...params});
+    user.save();
+
+    return user;
+  }
+
   static sanitizeName(name) {
     return name.replace(/\s+/g,' ').trim();
   }
 
-  constructor({name, age, gender}) {
-    this._id        = this.generateID();
-    this.name       = User.sanitizeName(name);
-    this.age        = age;
-    this.gender     = gender.toUpperCase();
-    this.created_at = new Date();
-    this.updated_at = this.created_at;
+  constructor(params) {
+    this.buildUser(params);
+    this.save(true);
+  }
+
+  buildUser({name, age, gender}) {
+    name   = User.sanitizeName(name);
+    gender = gender.toUpperCase();
+    // Note: validation has to come before setting the new params!
     this.errors  = [];
-    this.validateName();
-    this.validateAge();
-    this.validateGender();
-    
-    this.save();
+    this.validateName(name);
+    this.validateAge(age);
+    this.validateGender(gender);
+    this.validate();
+
+    this.name   = name
+    this.age    = age;
+    this.gender = gender;
+  }
+
+  validateName(name) {
+    if(!/^[A-Za-z\s]+$/.test(name))
+      this.errors.push("Name should only contain letters");
+
+    if(name.length < NAME_MIN_LENGTH)
+      this.errors.push(`Name length has to be more than or equal to ${NAME_MIN_LENGTH}`);
+  }
+
+  validateAge(age) {
+    if(isNaN(age)){
+      this.errors.push("Age must be a number");
+      return; // return here because rest of validations are on numbers!;
+    }
+
+    if (age < MIN_AGE || age > MAX_AGE)
+      this.errors.push(`Age must be between ${MIN_AGE} and ${MAX_AGE}`);
+  }
+
+  validateGender(gender) {
+    if (!POSSIBLE_GENDERS.includes(gender))
+      this.errors.push(`Gender must be either ${POSSIBLE_GENDERS.join(" or ")}`);
+  }
+
+  validate() {
+    const errors = [...this.errors];
+    delete this.errors;
+    if(errors.length) {
+      throw errors;
+    } 
   }
 
   generateID() {
@@ -43,46 +88,11 @@ class User {
     return id;
   }
 
-  setName(name) {
-    this.name = User.sanitizeName(name);
-  }
-
-  setGender(gender) {
-    this.gender = gender;
-  }
-
-  setGender(gender) {
-    this.gender = gender;
-  }
-
-  validateName() {
-    if(!/^[A-Za-z\s]+$/.test(this.name))
-      this.errors.push("Name should only contain letters");
-
-    if(this.name.length < NAME_MIN_LENGTH)
-      this.errors.push(`Name length has to be more than or equal to ${NAME_MIN_LENGTH}`);
-  }
-
-  validateAge() {
-    if(isNaN(this.age)){
-      this.errors.push("Age must be a number");
-      return; // return here because rest of validations are on numbers!;
-    }
-
-    if (this.age < MIN_AGE || this.age > MAX_AGE)
-      this.errors.push(`Age must be between ${MIN_AGE} and ${MAX_AGE}`);
-  }
-
-  validateGender() {
-    if (!POSSIBLE_GENDERS.includes(this.gender))
-      this.errors.push(`Gender must be either ${POSSIBLE_GENDERS.join(" or ")}`);
-  }
-
-  save() {
-    if(this.errors.length) {
-      throw this.errors;
-    } else {
-      delete this.errors;
+  save(isNew = false) {
+    this.updated_at = new Date();
+    if(isNew) {
+      this.created_at = this.updated_at;
+      this._id        = this.generateID();
       usersDB.push(this);
       idList.add(this.id);
     }
