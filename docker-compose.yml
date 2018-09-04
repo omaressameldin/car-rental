@@ -1,0 +1,12 @@
+version: "3"
+services:
+  reply-concept-users:
+    container_name: users-app
+    build: ./users-app/.
+    image: users-app
+    restart: on-failure
+    volumes:
+      - ./users-app/app:/usr/src/app
+    ports:
+      - "15000:3000" 
+    command: npm run dev
