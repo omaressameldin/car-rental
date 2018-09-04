@@ -15,8 +15,8 @@ class User {
       return foundUser;
   }
 
-  static updateUser(_id, params) {
-    let user = User.getUser(_id);
+  static updateUser(id, params) {
+    let user = User.getUser(id);
 
     user.buildUser({...user, ...params});
     user.save();
