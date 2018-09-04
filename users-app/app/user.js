@@ -7,6 +7,14 @@ const NAME_MIN_LENGTH  = 3;
       POSSIBLE_GENDERS = ["M", "F"];
 
 class User {
+  static getUser(id) {
+    const foundUser = usersDB.filter((user) => user._id === id)[0];
+    if(!foundUser) 
+      throw ["can not find user with that id"];
+    else
+      return foundUser;
+  }
+
   static sanitizeName(name) {
     return name.replace(/\s+/g,' ').trim();
   }
