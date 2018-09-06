@@ -106,7 +106,7 @@ class User {
       this.created_at = this.updated_at;
       this._id        = this.generateID();
       usersDB.push(this);
-      idList.add(this.id);
+      idList.add(this._id);
     }
   }
 }
