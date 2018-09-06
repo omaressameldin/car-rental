@@ -10,6 +10,10 @@ function sendOutput(res, fn) {
   }
 }
 
+function userParams(body) {
+  return body.user || {}
+}
+
 module.exports = router(
   get('/users', (_, res) => {
     sendOutput(res, () =>{ return {uesrs: usersDB} });
@@ -21,12 +25,12 @@ module.exports = router(
 
   post('/users', async (req, res) => {
     const body = await json(req);
-    sendOutput(res, () =>  new User(body.user));
+    sendOutput(res, () =>  new User(userParams(body)));
   }),
 
   patch('/users/:id', async (req, res) => {
     const body = await json(req);
-    sendOutput(res, () =>  User.updateUser(req.params.id, body.user));
+    sendOutput(res, () =>  User.updateUser(req.params.id, userParams(body)));
   }),
 
   del('/users/:id', async (req, res) => {
