@@ -9,6 +9,7 @@ services:
       - ./users-app/app:/usr/src/app
     ports:
       - "15000:3000" 
+    command: npm run dev  
   reply-concept-cars:
     container_name: cars-app
     build: ./cars-app/.
