@@ -33,7 +33,7 @@ class User {
   }
 
   static sanitizeName(name) {
-    return name.replace(/\s+/g,' ').trim();
+    return name ? name.replace(/\s+/g,' ').trim() : name;
   }
 
   constructor(params) {
@@ -43,7 +43,7 @@ class User {
 
   buildUser({name, age, gender}) {
     name   = User.sanitizeName(name);
-    gender = gender.toUpperCase();
+    gender = gender ? gender.toUpperCase() : gender;
     // Note: validation has to come before setting the new params!
     this.errors  = [];
     this.validateName(name);
@@ -60,7 +60,7 @@ class User {
     if(!/^[A-Za-z\s]+$/.test(name))
       this.errors.push("Name should only contain letters");
 
-    if(name.length < NAME_MIN_LENGTH)
+    if(!name || name.length < NAME_MIN_LENGTH)
       this.errors.push(`Name length has to be more than or equal to ${NAME_MIN_LENGTH}`);
   }
 
