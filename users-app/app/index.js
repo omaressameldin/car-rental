@@ -1,6 +1,6 @@
 const { json, send }                    = require('micro');
 const { router, get, post, patch, del } = require('microrouter');
-const { User, usersDB }                 = require('./user.js');
+const { User }                          = require('./user.js');
 
 function sendOutput(res, fn) {
   try {
@@ -16,7 +16,7 @@ function userParams(body) {
 
 module.exports = router(
   get('/users', (_, res) => {
-    sendOutput(res, () =>{ return {uesrs: usersDB} });
+    sendOutput(res, () =>{ return {uesrs: User.all()} });
   }),
 
   get('/users/:id', (req, res) => {

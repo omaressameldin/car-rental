@@ -32,6 +32,10 @@ class User {
       throw ["can not find user with that id"];
   }
 
+  static all() {
+    return usersDB;
+  }
+
   static sanitizeName(name) {
     return name ? name.replace(/\s+/g,' ').trim() : name;
   }
@@ -107,5 +111,4 @@ class User {
   }
 }
 
-module.exports.User    = User
-module.exports.usersDB = usersDB
+module.exports.User    = User;
