@@ -20,3 +20,13 @@ services:
     ports:
       - "15001:3000"       
     command: npm run dev
+  reply-concept-demands:
+    container_name: demands-app
+    build: ./demands-app/.
+    image: demands-app
+    restart: on-failure
+    volumes:
+      - ./demands-app/app:/usr/src/app
+    ports:
+      - "15002:3000"       
+    command: npm run dev
