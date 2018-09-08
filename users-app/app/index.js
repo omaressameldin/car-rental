@@ -6,7 +6,7 @@ function sendOutput(res, fn) {
   try {
     send(res, 200, fn());
   } catch (err) {
-    send(res, 422, {errors: err})
+    send(res, 422, {errors: err.message.split(",")})
   }
 }
 
