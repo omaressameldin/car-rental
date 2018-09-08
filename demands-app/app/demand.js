@@ -51,13 +51,16 @@ class Demand {
     })();
   }
 
-  async buildDemand({userID, model, type, color, infotainmentSystem, isLeatherInterior, pickupLocation, dropOffLocation }) {
+  async buildDemand({userID, model, type, color, infotainmentSystem, isLeatherInterior, pickupLocation, dropoffLocation, pickupTime, dropoffTime }) {
     model                      = Demand.changeToUpperCase(model);
     type                       = Demand.changeToUpperCase(type);
     color                      = Demand.changeToUpperCase(color);
     infotainmentSystem         = Demand.changeToUpperCase(infotainmentSystem);
     const {xPickup, yPickup}   = pickupLocation  ? pickupLocation  : {xPickup: null, yPickup: null};
-    const {xDropOff, yDropOff} = dropOffLocation ? dropOffLocation : {xDropOff: null, yDropOff: null};
+    const {xDropoff, yDropoff} = dropoffLocation ? dropoffLocation : {xDropoff: null, yDropoff: null};
+    pickupTime                 = new Date(pickupTime);
+    dropoffTime                = new Date(dropoffTime);
+
     // Note: validation has to come before setting the new params!
     this.errors  = [];
     await this.validateUserID(userID);
@@ -68,8 +71,9 @@ class Demand {
     this.validateIsLeatherInterior(isLeatherInterior);
     this.validateCoordinate(xPickup);
     this.validateCoordinate(yPickup);
-    this.validateCoordinate(xDropOff);
-    this.validateCoordinate(yDropOff);
+    this.validateCoordinate(xDropoff);
+    this.validateCoordinate(yDropoff);
+    this.validateTime(pickupTime, dropoffTime);
     this.validate();
 
     this.userID             = userID;
@@ -79,7 +83,9 @@ class Demand {
     this.infotainmentSystem = infotainmentSystem;
     this.isLeatherInterior  = isLeatherInterior;
     this.pickupLocation     = pickupLocation
-    this.dropOffLocation    = dropOffLocation;
+    this.dropoffLocation    = dropoffLocation;
+    this.pickupTime         = pickupTime;
+    this.dropoffTime        = dropoffTime;
 
   }
 
@@ -121,6 +127,13 @@ class Demand {
       this.errors.push("isLeatherInterior can only be a boolean");
   }
 
+  validateTime(pickupTime, dropoffTime) {
+    if(isNaN(pickupTime.getTime()) || isNaN(dropoffTime).getTime)
+      this.errors.push("times should be in that form: [Month name] [day], [year] [hours]:[minutes]");
+    else if(pickupTime > dropoffTime)
+      this.errors.push("dropoff time cant be before pickup time");
+  }
+  
   validate() {
     const errors = [...this.errors];
     delete this.errors;
