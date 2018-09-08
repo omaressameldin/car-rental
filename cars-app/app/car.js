@@ -4,7 +4,7 @@ let engineNumberHash = {};
 
 const MAX_COORDINATE                 = 100;
       AVAILABLE_MODELS               = ["BMW", "VW", "MERCEDES"]
-      AVAILABLE_TYPES                = ["SEDAN", "SUV", "cabriolet"];
+      AVAILABLE_TYPES                = ["SEDAN", "SUV", "CABRIOLET"];
       AVAILABLE_COLORS               = ["RED", "GREEN", "BLACK", "BLUE"];
       AVAILABLE_INFOTAINMENT_SYSTEMS = ["CD", "CASSETTE", "BLUETOOTH"];
       ENGINE_NUMBER_LENGTH           = 8
