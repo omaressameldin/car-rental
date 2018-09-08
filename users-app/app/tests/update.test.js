@@ -4,7 +4,7 @@ import { HelperFunctions } from './helper_functions.js'
 
 test('update single user attribute', async t => {
   const user          = new User(HelperFunctions.userParams());
-  const {updatedAt}   = user
+  const {updatedAt}   = user;
   const updatedParams = {name: "Mark"};
   const updatedUser   = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, updatedParams)), 100));
 
@@ -15,7 +15,7 @@ test('update single user attribute', async t => {
 
 test('update multiple user attribute', async t => {
   const user          = new User(HelperFunctions.userParams());
-  const {updatedAt}   = user
+  const {updatedAt}   = user;
   const updatedParams = {name: "Mark", age: 17};
   const updatedUser   = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, updatedParams)), 100));
   t.deepEqual({...updatedUser}, {...user, ...updatedParams});
