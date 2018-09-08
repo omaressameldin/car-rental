@@ -142,9 +142,9 @@ class Car {
   }
 
   save(isNew = false) {
-    this.updated_at = new Date();
+    this.updatedAt = new Date();
     if(isNew) {
-      this.created_at = this.updated_at;
+      this.createdAt = this.updatedAt;
       this._id        = this.generateID();
       carsDB.push(this);
       idList.add(this._id);
