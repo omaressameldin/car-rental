@@ -45,7 +45,7 @@ test('update non existing user', t => {
   t.deepEqual(HelperFunctions.sanitizeError(error), ['can not find user with that id']);
 });
 
-test('create errors work on update', t => {
+test('errors work on update', t => {
   const user        = new User(HelperFunctions.userParams());
   const error = t.throws(() => {
     User.updateUser(user._id, {name: "", age: -1, gender: "MO"});

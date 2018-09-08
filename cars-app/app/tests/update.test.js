@@ -46,7 +46,7 @@ test('update non existing car', t => {
   t.deepEqual(HelperFunctions.sanitizeError(error), ['can not find car with that id']);
 });
 
-test('create errors work on update', t => {
+test('errors work on update', t => {
   const car        = new Car(HelperFunctions.carParams());
   const error = t.throws(() => {
     Car.updateCar(car._id, {
