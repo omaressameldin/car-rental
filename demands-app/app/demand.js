@@ -93,22 +93,22 @@ class Demand {
 
   validateModel(model) {
     if (!AVAILABLE_MODELS.includes(model))
-      this.errors.push(`you can only get one of these models: ${AVAILABLE_MODELS.join(", ")}`);
+      this.errors.push(`you can only get one of these models: ${AVAILABLE_MODELS.join(" - ")}`);
   }
   
   validateType(type) {
     if (!AVAILABLE_TYPES.includes(type))
-      this.errors.push(`you can only get one of these types: ${AVAILABLE_TYPES.join(", ")}`);    
+      this.errors.push(`you can only get one of these types: ${AVAILABLE_TYPES.join(" - ")}`);    
   }
 
   validateColor(color) {
     if (!AVAILABLE_COLORS.includes(color))
-      this.errors.push(`you can only get one of these colors: ${AVAILABLE_COLORS.join(", ")}`);
+      this.errors.push(`you can only get one of these colors: ${AVAILABLE_COLORS.join(" - ")}`);
   }
 
   validateInfotainmentSystem(infotainmentSystem) {
     if (!AVAILABLE_INFOTAINMENT_SYSTEMS.includes(infotainmentSystem))
-    this.errors.push(`you can only get one of these systems: ${AVAILABLE_INFOTAINMENT_SYSTEMS.join(", ")}`); 
+    this.errors.push(`you can only get one of these systems: ${AVAILABLE_INFOTAINMENT_SYSTEMS.join(" - ")}`); 
   }
 
   validateCoordinate(coordinate) {
