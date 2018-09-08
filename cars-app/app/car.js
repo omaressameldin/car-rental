@@ -110,7 +110,7 @@ class Car {
 
   validateEngineNumber(engineNumber) {
     if(engineNumberHash[engineNumber] && engineNumberHash[engineNumber] !== this._id)
-      this.errors.push(`engine numbers already exists!`);
+      this.errors.push(`engine number already exists!`);
 
     if(!/^[A-Za-z0-9\-]+$/.test(engineNumber))
       this.errors.push('engine numbers can only have [numbers - dashes - letters]');
