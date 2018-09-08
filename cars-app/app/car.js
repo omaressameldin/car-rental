@@ -113,7 +113,7 @@ class Car {
       this.errors.push(`engine numbers already exists!`);
 
     if(!/^[A-Za-z0-9\-]+$/.test(engineNumber))
-      this.errors.push('engine numbers can only have numbers, dashes, and letters');
+      this.errors.push('engine numbers can only have [numbers - dashes - letters]');
 
     if(!engineNumber || engineNumber.length !== ENGINE_NUMBER_LENGTH)
       this.errors.push(`engin number must be ${ENGINE_NUMBER_LENGTH} characters`);
