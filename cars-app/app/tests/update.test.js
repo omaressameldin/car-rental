@@ -24,6 +24,20 @@ test('update multiple car attribute', async t => {
   t.deepEqual(Object.keys(car).sort(), HelperFunctions.carAttributes().sort());
 });
 
+test('inability to update created at', async t => {
+  const car         = new Car(HelperFunctions.carParams());
+  const {updatedAt} = car
+  let updatedParams = {};
+  const updatedCar  = await new Promise( (resolve) => setTimeout(() => {
+    updatedParams = {createdAt: new Date()};
+    resolve(Car.updateCar(car._id, updatedParams))
+  } , 100));
+
+  t.not(car.updatedAt, updatedAt);
+  t.not(car.createdAt, updatedParams.createdAt)
+  t.deepEqual(Object.keys(car).sort(), HelperFunctions.carAttributes().sort());
+});
+
 test('update non existing car', t => {
   const error = t.throws(() => {
     Car.updateCar("asd", {});
