@@ -13,7 +13,7 @@ class Demand {
   static getDemand(id) {
     const foundDemand = demandsDB.find((demand) => demand._id === id);
     if(!foundDemand) 
-      throw ["can not find demand with that id"];
+      throw new Error(["can not find demand with that id"]);
     else
       return foundDemand;
   }
@@ -32,7 +32,7 @@ class Demand {
 
     demandsDB = demandsDB.filter((demand) => demand._id !== id);
     if(orignalLength === demandsDB.length)
-      throw ["can not find demand with that id"];
+      throw new Error(["can not find demand with that id"]);
   }
 
   static all() {
@@ -125,7 +125,7 @@ class Demand {
     const errors = [...this.errors];
     delete this.errors;
     if(errors.length) {
-      throw errors;
+      throw new Error(errors);
     } 
   }
 

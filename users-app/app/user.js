@@ -10,7 +10,7 @@ class User {
   static getUser(id) {
     const foundUser = usersDB.find((user) => user._id === id);
     if(!foundUser) 
-      throw ["can not find user with that id"];
+      throw new Error(["can not find user with that id"]);
     else
       return foundUser;
   }
@@ -29,7 +29,7 @@ class User {
 
     usersDB = usersDB.filter((user) => user._id !== id);
     if(orignalLength === usersDB.length)
-      throw ["can not find user with that id"];
+      throw new Error(["can not find user with that id"]);
   }
 
   static all() {
@@ -87,7 +87,7 @@ class User {
     const errors = [...this.errors];
     delete this.errors;
     if(errors.length) {
-      throw errors;
+      throw new Error(errors);
     } 
   }
 

@@ -13,7 +13,7 @@ class Car {
   static getCar(id) {
     const foundCar = carsDB.find((car) => car._id === id);
     if(!foundCar) 
-      throw ["can not find car with that id"];
+      throw new Error(["can not find car with that id"]);
     else
       return foundCar;
   }
@@ -32,7 +32,7 @@ class Car {
 
     carsDB = carsDB.filter((car) => car._id !== id);
     if(orignalLength === carsDB.length)
-      throw ["can not find car with that id"];
+      throw new Error(["can not find car with that id"]);
   }
 
   static all() {
@@ -128,7 +128,7 @@ class Car {
     const errors = [...this.errors];
     delete this.errors;
     if(errors.length) {
-      throw errors;
+      throw new Error(errors);
     } 
   }
 
