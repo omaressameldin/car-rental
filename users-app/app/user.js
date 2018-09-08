@@ -37,7 +37,7 @@ class User {
   }
 
   static sanitizeName(name) {
-    return name ? name.replace(/\s+/g,' ').trim() : name;
+    return name ? String(name).replace(/\s+/g,' ').trim() : name;
   }
 
   constructor(params) {
@@ -47,7 +47,7 @@ class User {
 
   buildUser({name, age, gender}) {
     name   = User.sanitizeName(name);
-    gender = gender ? gender.toUpperCase() : gender;
+    gender = gender ? String(gender.toUpperCase()) : gender;
     // Note: validation has to come before setting the new params!
     this.errors  = [];
     this.validateName(name);
