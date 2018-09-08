@@ -49,12 +49,25 @@ test('update non existing car', t => {
 test('create errors work on update', t => {
   const car        = new Car(HelperFunctions.carParams());
   const error = t.throws(() => {
-    Car.updateCar(car._id, {name: "", age: -1, gender: "MO"});
+    Car.updateCar(car._id, {
+      model:              "PORCHE",
+      type:               "VAN",
+      color:              "PURPLE",
+      infotainmentSystem: "NONE",
+      engineNumber:       `-12*&ad`,
+      location:           {x: -4, y: 101},
+      isLeatherInterior:  undefined,
+    });
   });
 
-  t.deepEqual(HelperFunctions.sanitizeError(error).sort(), ['Name should only contain letters', 
-                                                            'Name length has to be more than or equal to 3', 
-                                                            'Age must be between 16 and 65', 
-                                                            'Gender must be either M or F'].sort());
+  t.deepEqual(HelperFunctions.sanitizeError(error).sort(), ['each coordinate must be between 0 and 100', 
+                                                            'each coordinate must be between 0 and 100', 
+                                                            'engin number must be 8 characters',
+                                                            'isLeatherInterior can only be a boolean',
+                                                            'you can only get one of these colors: RED - GREEN - BLACK - BLUE',
+                                                            'you can only get one of these models: BMW - VW - MERCEDES',
+                                                            'you can only get one of these systems: CD - CASSETTE - BLUETOOTH',
+                                                            'you can only get one of these types: SEDAN - SUV - CABRIOLET',
+                                                            'engine numbers can only have [numbers - dashes - letters]'].sort());
 });
 
