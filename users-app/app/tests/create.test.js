@@ -7,7 +7,7 @@ test('creating user', t => {
   const user   = new User(params);
 
   const {name, age, gender, createdAt, updatedAt, _id} = user
-  t.deepEqual({name, age, gender}, HelperFunctions.userParams());
+  t.deepEqual({name, age, gender}, params);
   t.true(createdAt instanceof Date);
   t.true(updatedAt instanceof Date);
   t.is(createdAt, updatedAt);
