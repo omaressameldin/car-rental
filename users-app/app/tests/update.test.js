@@ -4,8 +4,10 @@ import { HelperFunctions } from './helper_functions.js'
 
 test('update single user attribute', async t => {
   const user        = new User(HelperFunctions.userParams());
+  const {updatedAt} = user
   const updatedUser = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, {name: "Mark"})), 100));
-  t.deepEqual({...updatedUser}, {...user, updatedAt: new Date(), name: "Mark"});
+  t.deepEqual({...updatedUser}, {...user, name: "Mark"});
+  t.not(user.updatedAt, updatedAt);
   t.deepEqual(Object.keys(user).sort(), HelperFunctions.userAttributes().sort());
 });
 
