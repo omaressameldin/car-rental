@@ -119,8 +119,8 @@ test('creating user with missing gender', t => {
 });
 
 test('stacking errors', t => {
-  const genderParam = {gender: undefined, name: undefined};
-  const params      = HelperFunctions.userParams(genderParam);
+  const multipleParam = {gender: undefined, name: undefined};
+  const params      = HelperFunctions.userParams(multipleParam);
 
   const error = t.throws(() => {
     new User(params);
