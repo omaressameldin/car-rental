@@ -21,10 +21,11 @@ class Demand {
   static updateDemand(id, params) {
     let demand = Demand.getDemand(id);
 
-    demand.buildDemand({...demand, ...params});
-    demand.save();
-
-    return demand;
+    return (async () => {
+      await demand.buildDemand({...demand, ...params});
+      demand.save();
+      return demand;
+    })();
   }
 
   static deleteDemand(id) {
@@ -84,8 +85,8 @@ class Demand {
     this.isLeatherInterior  = isLeatherInterior;
     this.pickupLocation     = pickupLocation
     this.dropoffLocation    = dropoffLocation;
-    this.pickupTime         = pickupTime;
-    this.dropoffTime        = dropoffTime;
+    this.pickupTime         = pickupTime.toString();
+    this.dropoffTime        = dropoffTime.toString();
 
   }
 
