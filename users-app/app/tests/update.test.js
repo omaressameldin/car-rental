@@ -13,14 +13,27 @@ test('update single user attribute', async t => {
   t.deepEqual(Object.keys(user).sort(), HelperFunctions.userAttributes().sort());
 });
 
-test('update multiple user attribute', async t => {
+test('update all user attribute', async t => {
   const user          = new User(HelperFunctions.userParams());
   const {updatedAt}   = user;
-  const updatedParams = {name: "Mark", age: 17};
+  const updatedParams = {name: "Mark", age: 17, gender: "F"};
   const updatedUser   = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, updatedParams)), 100));
 
   t.deepEqual({...updatedUser}, {...user, ...updatedParams});
   t.not(user.updatedAt, updatedAt);
+  t.deepEqual(Object.keys(user).sort(), HelperFunctions.userAttributes().sort());
+});
+
+test('inability to update created at', async t => {
+  const user        = new User(HelperFunctions.userParams());
+  const {updatedAt} = user
+  let updatedParams = {};
+  const updatedUser  = await new Promise( (resolve) => setTimeout(() => {
+    updatedParams = {createdAt: new Date()};
+    resolve(User.updateUser(user._id, updatedParams))
+  } , 100));
+  t.not(user.updatedAt, updatedAt);
+  t.not(user.createdAt, updatedParams.createdAt)
   t.deepEqual(Object.keys(user).sort(), HelperFunctions.userAttributes().sort());
 });
 
