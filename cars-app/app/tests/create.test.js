@@ -8,8 +8,8 @@ test('creating car', t => {
 
   const {model, type, color, infotainmentSystem, engineNumber, location, isLeatherInterior, createdAt, updatedAt, _id} = car
   t.deepEqual({model, type, color, infotainmentSystem, engineNumber, location, isLeatherInterior}, params);
-  t.true(createdAt instanceof Date);
-  t.true(updatedAt instanceof Date);
+  t.false(isNaN(new Date(createdAt)));
+  t.false(isNaN(new Date(updatedAt)));
   t.is(createdAt, updatedAt);
   t.is(_id.length, 10);
 });
@@ -21,8 +21,8 @@ test('creating car with lower case model, type, color, infoTainmentSystem', t =>
 
   const {model, type, color, infotainmentSystem, engineNumber, location, isLeatherInterior, createdAt, updatedAt, _id} = car
   t.deepEqual({model, type, color, infotainmentSystem, engineNumber, location, isLeatherInterior}, {...capitalParams});
-  t.true(createdAt instanceof Date);
-  t.true(updatedAt instanceof Date);
+  t.false(isNaN(new Date(createdAt)));
+  t.false(isNaN(new Date(updatedAt)));
   t.is(createdAt, updatedAt);
   t.is(_id.length, 10);
 });

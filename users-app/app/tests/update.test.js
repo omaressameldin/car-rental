@@ -6,10 +6,10 @@ test('update single user attribute', async t => {
   const user          = new User(HelperFunctions.userParams());
   const {updatedAt}   = user;
   const updatedParams = {name: "Mark"};
-  const updatedUser   = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, updatedParams)), 100));
+  const updatedUser   = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, updatedParams)), 1000));
 
   t.deepEqual({...updatedUser}, {...user, ...updatedParams});
-  t.not(user.updatedAt, updatedAt);
+  t.not(updatedUser.updatedAt, updatedAt);
   t.deepEqual(Object.keys(user).sort(), HelperFunctions.userAttributes().sort());
 });
 
@@ -17,10 +17,10 @@ test('update all user attribute', async t => {
   const user          = new User(HelperFunctions.userParams());
   const {updatedAt}   = user;
   const updatedParams = {name: "Mark", age: 17, gender: "F"};
-  const updatedUser   = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, updatedParams)), 100));
+  const updatedUser   = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, updatedParams)), 1000));
 
   t.deepEqual({...updatedUser}, {...user, ...updatedParams});
-  t.not(user.updatedAt, updatedAt);
+  t.not(updatedUser.updatedAt, updatedAt);
   t.deepEqual(Object.keys(user).sort(), HelperFunctions.userAttributes().sort());
 });
 
@@ -29,10 +29,10 @@ test('inability to update created at', async t => {
   const {updatedAt} = user
   let updatedParams = {};
   const updatedUser  = await new Promise( (resolve) => setTimeout(() => {
-    updatedParams = {createdAt: new Date()};
+    updatedParams = {createdAt: new Date().toString()};
     resolve(User.updateUser(user._id, updatedParams))
-  } , 100));
-  t.not(user.updatedAt, updatedAt);
+  } , 1000));
+  t.not(updatedUser.updatedAt, updatedAt);
   t.not(user.createdAt, updatedParams.createdAt)
   t.deepEqual(Object.keys(user).sort(), HelperFunctions.userAttributes().sort());
 });

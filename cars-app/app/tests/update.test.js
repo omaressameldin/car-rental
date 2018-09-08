@@ -6,10 +6,10 @@ test('update single car attribute', async t => {
   const car           = new Car(HelperFunctions.carParams());
   const {updatedAt}   = car;
   const updatedParams = {model: "VW"};
-  const updatedCar    = await new Promise( (resolve) => setTimeout(() => resolve(Car.updateCar(car._id, updatedParams)), 100));
+  const updatedCar    = await new Promise( (resolve) => setTimeout(() => resolve(Car.updateCar(car._id, updatedParams)), 1000));
 
   t.deepEqual({...updatedCar}, {...car, ...updatedParams});
-  t.not(car.updatedAt, updatedAt);
+  t.not(updatedCar.updatedAt, updatedAt);
   t.deepEqual(Object.keys(car).sort(), HelperFunctions.carAttributes().sort());
 });
 
@@ -17,10 +17,10 @@ test('update multiple car attribute', async t => {
   const car           = new Car(HelperFunctions.carParams());
   const {updatedAt}   = car
   const updatedParams = {model: "VW", color: "BLACK"};
-  const updatedCar    = await new Promise( (resolve) => setTimeout(() => resolve(Car.updateCar(car._id, updatedParams)), 100));
+  const updatedCar    = await new Promise( (resolve) => setTimeout(() => resolve(Car.updateCar(car._id, updatedParams)), 1000));
 
   t.deepEqual({...updatedCar}, {...car, ...updatedParams});
-  t.not(car.updatedAt, updatedAt);
+  t.not(updatedCar.updatedAt, updatedAt);
   t.deepEqual(Object.keys(car).sort(), HelperFunctions.carAttributes().sort());
 });
 
@@ -29,11 +29,11 @@ test('inability to update created at', async t => {
   const {updatedAt} = car
   let updatedParams = {};
   const updatedCar  = await new Promise( (resolve) => setTimeout(() => {
-    updatedParams = {createdAt: new Date()};
+    updatedParams = {createdAt: new Date().toString()};
     resolve(Car.updateCar(car._id, updatedParams))
-  } , 100));
+  } , 1000));
 
-  t.not(car.updatedAt, updatedAt);
+  t.not(updatedCar.updatedAt, updatedAt);
   t.not(car.createdAt, updatedParams.createdAt)
   t.deepEqual(Object.keys(car).sort(), HelperFunctions.carAttributes().sort());
 });

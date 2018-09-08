@@ -8,8 +8,8 @@ test('creating user', t => {
 
   const {name, age, gender, createdAt, updatedAt, _id} = user
   t.deepEqual({name, age, gender}, params);
-  t.true(createdAt instanceof Date);
-  t.true(updatedAt instanceof Date);
+  t.false(isNaN(new Date(createdAt)));
+  t.false(isNaN(new Date(updatedAt)));
   t.is(createdAt, updatedAt);
   t.is(_id.length, 10);
 });
