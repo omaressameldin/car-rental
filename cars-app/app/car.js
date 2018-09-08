@@ -45,7 +45,7 @@ class Car {
   }
 
   static changeToUpperCase(param) {
-    return param ? param.toUpperCase() : param;
+    return param ? String(param).toUpperCase() : param;
   }
 
   constructor(params) {

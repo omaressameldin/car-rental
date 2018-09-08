@@ -47,7 +47,7 @@ class User {
 
   buildUser({name, age, gender}) {
     name   = User.sanitizeName(name);
-    gender = gender ? String(gender.toUpperCase()) : gender;
+    gender = gender ? String(gender).toUpperCase() : gender;
     // Note: validation has to come before setting the new params!
     this.errors  = [];
     this.validateName(name);
