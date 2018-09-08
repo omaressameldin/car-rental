@@ -1,5 +1,5 @@
 import test                from 'ava';
-import { Car }            from '../car.js';
+import { Car }             from '../car.js';
 import { HelperFunctions } from './helper_functions.js'
 
 test('creating car', t => {
