@@ -3,18 +3,23 @@ import { User }            from '../user.js';
 import { HelperFunctions } from './helper_functions.js'
 
 test('update single user attribute', async t => {
-  const user        = new User(HelperFunctions.userParams());
-  const {updatedAt} = user
-  const updatedUser = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, {name: "Mark"})), 100));
-  t.deepEqual({...updatedUser}, {...user, name: "Mark"});
+  const user          = new User(HelperFunctions.userParams());
+  const {updatedAt}   = user
+  const updatedParams = {name: "Mark"};
+  const updatedUser   = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, updatedParams)), 100));
+
+  t.deepEqual({...updatedUser}, {...user, ...updatedParams});
   t.not(user.updatedAt, updatedAt);
   t.deepEqual(Object.keys(user).sort(), HelperFunctions.userAttributes().sort());
 });
 
 test('update multiple user attribute', async t => {
-  const user        = new User(HelperFunctions.userParams());
-  const updatedUser = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, {name: "Mark", age: 17})), 100));
-  t.deepEqual({...updatedUser}, {...user, updatedAt: new Date(), name: "Mark", age: 17});
+  const user          = new User(HelperFunctions.userParams());
+  const {updatedAt}   = user
+  const updatedParams = {name: "Mark", age: 17};
+  const updatedUser   = await new Promise( (resolve) => setTimeout(() => resolve(User.updateUser(user._id, updatedParams)), 100));
+  t.deepEqual({...updatedUser}, {...user, ...updatedParams});
+  t.not(user.updatedAt, updatedAt);
   t.deepEqual(Object.keys(user).sort(), HelperFunctions.userAttributes().sort());
 });
 
