@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm install && micro",
+    "test": "ava tests/**/*.test*",
     "dev": "npm install && node --inspect node_modules/.bin/micro-dev"
   },
   "devDependencies": {
