@@ -24,6 +24,7 @@ function updateCar(id, body) {
 
 const routes = router(
   get('/cars', (_, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     sendOutput(res, () =>{ return {cars: Car.all()} });
   }),
 
