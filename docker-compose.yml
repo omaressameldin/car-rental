@@ -56,3 +56,17 @@ services:
     volumes:
       - ./simulator-app/app:/usr/src/app     
     command: ["/wait-for-it.sh", "cars-app:3000", "--", "npm", "run", "start"]
+  reply-concept-dashboard:
+    container_name: dashboard-app
+    build: ./dashboard-app/.
+    image: dashboard-app
+    restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: 100k     
+    volumes:
+      - ./dashboard-app/app:/usr/src/app  
+    ports:
+      - "15003:3000"       
+    command: npm start 
