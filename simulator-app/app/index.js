@@ -38,6 +38,9 @@ async function createCars() {
       .then( (response) => {
         cars.push({id: response.data._id, direction: decideMovement(response.data.location)});
       })
+      .catch((response) => {
+        console.log(response);
+      })
     );
   }
 
