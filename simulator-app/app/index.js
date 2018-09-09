@@ -11,8 +11,28 @@ function decideMovement({x, y}) {
   }
   
   const {xDestination} = Math.max(calculateDistance({xDestination: 0,yDestination: 0}, {xDestination: 100, yDestination: 100} ))
-  const options = xDestination ? [{xDirection: 0, yDirection: -1}, {xDirection: -1, yDirection: -1}, {xDirection: 0, yDirection: -1}] :
-                              [{xDirection: 0, yDirection: 1}, {xDirection: 1, yDirection: 1}, {xDirection: 0, yDirection: 1}]
+  const options = xDestination ? [
+    {xDirection: 0, yDirection: -1},
+    {xDirection: -1, yDirection: -1}, 
+    {xDirection: 0, yDirection: -1},
+    {xDirection: 0, yDirection: -2},
+    {xDirection: -2, yDirection: -2}, 
+    {xDirection: 0, yDirection: -2},
+    {xDirection: 0, yDirection: -3},
+    {xDirection: -3, yDirection: -3}, 
+    {xDirection: 0, yDirection: -3},    
+  ] :
+  [
+    {xDirection: 0, yDirection: 1}, 
+    {xDirection: 1, yDirection: 1}, 
+    {xDirection: 0, yDirection: 1},
+    {xDirection: 0, yDirection: 2}, 
+    {xDirection: 2, yDirection: 2}, 
+    {xDirection: 0, yDirection: 2},
+    {xDirection: 0, yDirection: 3}, 
+    {xDirection: 3, yDirection: 3}, 
+    {xDirection: 0, yDirection: 3}        
+  ]
 
 
   return {...options[Math.floor(Math.random()*options.length)]}
