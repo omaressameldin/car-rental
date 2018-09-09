@@ -5,6 +5,10 @@ services:
     build: ./users-app/.
     image: users-app
     restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: 100k   
     volumes:
       - ./users-app/app:/usr/src/app
     ports:
@@ -15,16 +19,24 @@ services:
     build: ./cars-app/.
     image: cars-app
     restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: 100k     
     volumes:
       - ./cars-app/app:/usr/src/app
     ports:
       - "15001:3000"       
-    command: npm run dev
+    command: npm start
   reply-concept-demands:
     container_name: demands-app
     build: ./demands-app/.
     image: demands-app
     restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: 100k     
     volumes:
       - ./demands-app/app:/usr/src/app
     ports:
@@ -35,6 +47,10 @@ services:
     build: ./simulator-app/.
     image: simulator-app
     restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: 100k       
     depends_on: 
       - reply-concept-cars
     volumes:
