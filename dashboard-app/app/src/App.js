@@ -25,14 +25,14 @@ static dynamicColor() {
 
       axios.get(`http://localhost:15001/cars`).then(({data}) => {
         this.setState({
-          cars: data.cars
+          cars: data.cars.map((car) => ({...car, bColor: App.dynamicColor()}))
         })
       })
 
     socket.on("CarUpdated", ({_id, location, traveledDistance}) => {
       this.setState((state) => {
         let cars = state.cars.map((car) => {
-          return (car._id == _id) ? {...car, location, traveledDistance} : car;
+          return (car._id === _id) ? {...car, location, traveledDistance} : car;
         });
 
         return {cars};
@@ -40,7 +40,7 @@ static dynamicColor() {
     });
 
     socket.on("CarCreated", newCar => {
-      this.setState((state) => ({cars: [...state.cars, {...newCar, color: App.dynamicColor()}]}));
+      this.setState((state) => ({cars: [...state.cars, {...newCar, bColor: App.dynamicColor()}]}));
     });    
   }
 
@@ -53,7 +53,7 @@ static dynamicColor() {
       datasets: [
         {
           label: 'Traveled Distances',
-          backgroundColor: cars.map(({color}) => color),
+          backgroundColor: cars.map(({bColor}) => bColor),
           borderColor: 'rgba(255,99,132,1)',
           borderWidth: 1,
           hoverBackgroundColor: 'rgba(255,99,132,0.4)',
@@ -89,7 +89,7 @@ static dynamicColor() {
           borderJoinStyle: 'miter',
           pointBorderColor: 'rgba(75,192,192,1)',
           pointBackgroundColor: '#fff',
-          backgroundColor: cars.map(({color}) => color),
+          backgroundColor: cars.map(({bColor}) => bColor),
           pointBorderWidth: 1,
           pointHoverRadius: 5,
           pointHoverBackgroundColor: 'rgba(75,192,192,1)',
@@ -115,7 +115,20 @@ static dynamicColor() {
         <h2 style={{ textAlign: "center" }}>Car Postiions</h2>
         <Bubble 
           width={100}
-          height={25}        
+          height={25}   
+          options={
+          {
+            tooltips: {
+              mode: 'label',
+              callbacks: {
+          
+                  beforeLabel: (tooltipItem, data) => {
+                      return data.labels[tooltipItem.index];
+                  },
+              },
+          }            
+          }            
+          }     
           data={positionData} 
         />  
       </div>
