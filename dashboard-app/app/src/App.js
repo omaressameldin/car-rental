@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import socketIOClient       from "socket.io-client";
 import {Bar, Bubble}        from 'react-chartjs-2';
+import axios                from 'axios';
 
 class App extends Component {
 static dynamicColor() {
@@ -20,7 +21,14 @@ static dynamicColor() {
 
   componentDidMount() {
     const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
+    const socket       = socketIOClient(endpoint);
+
+      axios.get(`http://localhost:15001/cars`).then(({data}) => {
+        this.setState({
+          cars: data.cars
+        })
+      })
+
     socket.on("CarUpdated", ({_id, location, traveledDistance}) => {
       this.setState((state) => {
         let cars = state.cars.map((car) => {
