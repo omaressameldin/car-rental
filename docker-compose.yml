@@ -30,3 +30,13 @@ services:
     ports:
       - "15002:3000"       
     command: npm run dev
+  reply-concept-simulator:
+    container_name: simulator-app
+    build: ./simulator-app/.
+    image: simulator-app
+    restart: on-failure
+    depends_on: 
+      - reply-concept-cars
+    volumes:
+      - ./simulator-app/app:/usr/src/app     
+    command: ["/wait-for-it.sh", "cars-app:3000", "--", "npm", "run", "start"]
