@@ -1,6 +1,8 @@
 const { json, send }                    = require('micro');
+const micro                             = require('micro');
 const { router, get, post, patch, del } = require('microrouter');
-const { Car }                   = require('./car.js');
+const { Car }                           = require('./car.js');
+const socketIo                          = require("socket.io");
 
 function sendOutput(res, fn) {
   try {
@@ -14,7 +16,13 @@ function carParams(body) {
   return body.car || {}
 }
 
-module.exports = router(
+function updateCar(id, body) {
+  const updatedCar = Car.updateCar(id, carParams(body));
+  io.emit("CarUpdated", {...updatedCar});
+  return updatedCar;
+}
+
+const routes = router(
   get('/cars', (_, res) => {
     sendOutput(res, () =>{ return {cars: Car.all()} });
   }),
@@ -25,15 +33,24 @@ module.exports = router(
 
   post('/cars', async (req, res) => {
     const body = await json(req);
-    sendOutput(res, () =>  new Car(carParams(body)));
+    sendOutput(res, () => {
+      const newCar = new Car(carParams(body));
+      io.emit("CarCreated", {...newCar}); 
+      return newCar
+    });
   }),
 
   patch('/cars/:id', async (req, res) => {
     const body = await json(req);
-    sendOutput(res, () =>  Car.updateCar(req.params.id, carParams(body)));
+    sendOutput(res, () => updateCar(req.params.id, body));
   }),
 
   del('/cars/:id', async (req, res) => {
     sendOutput(res, () => Car.deleteCar(req.params.id));
   })
 );
+
+const server = micro(routes);
+const io     = socketIo(server);
+
+server.listen(3000, () => console.log('Listening on localhost:3000'));
