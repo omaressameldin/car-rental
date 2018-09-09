@@ -78,9 +78,9 @@ class Car {
     this.type               = type;
     this.infotainmentSystem = infotainmentSystem;
     this.engineNumber       = engineNumber;
+    this.oldLocation        = {...this.location};
     this.location           = location;
     this.isLeatherInterior  = isLeatherInterior;
-
   }
 
   validateModel(model) {
@@ -144,11 +144,18 @@ class Car {
   save(isNew = false) {
     this.updatedAt = new Date().toString();
     if(isNew) {
-      this.createdAt = this.updatedAt;
-      this._id        = this.generateID();
+      this.createdAt        = this.updatedAt;
+      this._id              = this.generateID();
+      this.traveledDistance = 0;
       carsDB.push(this);
       idList.add(this._id);
+    } else {
+      const xDifference     = (this.location.x - this.oldLocation.x);
+      const yDifference     = (this.location.y - this.oldLocation.y);
+      this.traveledDistance = Math.sqrt(xDifference * xDifference + yDifference * yDifference);
     }
+
+    delete this.oldLocation;
     engineNumberHash[this.engineNumber] = this._id;
   }
 }
