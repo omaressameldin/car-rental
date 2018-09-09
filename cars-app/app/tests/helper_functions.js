@@ -14,6 +14,6 @@ module.exports.HelperFunctions = {
     return error.message.split(",")
   },
   carAttributes: () => {
-    return ['model', 'type', 'color', 'infotainmentSystem', 'engineNumber', 'location', 'isLeatherInterior', 'createdAt', 'updatedAt', '_id'];
+    return ['model', 'type', 'color', 'infotainmentSystem', 'engineNumber', 'location', 'isLeatherInterior', 'traveledDistance', 'createdAt', 'updatedAt', '_id'];
   }
 }

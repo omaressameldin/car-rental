@@ -6,8 +6,9 @@ test('creating car', t => {
   const params = HelperFunctions.carParams();
   const car   = new Car(params);
 
-  const {model, type, color, infotainmentSystem, engineNumber, location, isLeatherInterior, createdAt, updatedAt, _id} = car
+  const {model, type, color, infotainmentSystem, engineNumber, location, isLeatherInterior, traveledDistance, createdAt, updatedAt, _id} = car
   t.deepEqual({model, type, color, infotainmentSystem, engineNumber, location, isLeatherInterior}, params);
+  t.is(traveledDistance, 0);
   t.false(isNaN(new Date(createdAt)));
   t.false(isNaN(new Date(updatedAt)));
   t.is(createdAt, updatedAt);
@@ -26,7 +27,6 @@ test('creating car with lower case model, type, color, infoTainmentSystem', t =>
   t.is(createdAt, updatedAt);
   t.is(_id.length, 10);
 });
-
 
 test('creating car with wrong model', t => {
   const modelParam = {model: 123};

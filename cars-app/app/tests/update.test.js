@@ -24,6 +24,20 @@ test('update multiple car attribute', async t => {
   t.deepEqual(Object.keys(car).sort(), HelperFunctions.carAttributes().sort());
 });
 
+test('update location and check updated distance', async t => {
+  const car           = new Car(HelperFunctions.carParams());
+  const {updatedAt}   = car;
+  const oldLocation = car.location;
+  const newLocation = {location: {x: 20, y: 28}};
+  const updatedCar    = await new Promise( (resolve) => setTimeout(() => resolve(Car.updateCar(car._id, newLocation)), 1000));
+
+  t.deepEqual({...updatedCar}, {...car, ...newLocation});
+  t.is(car.traveledDistance, Math.sqrt((oldLocation.x - updatedCar.location.x) * (oldLocation.x - updatedCar.location.x) + 
+    (oldLocation.y - updatedCar.location.y) * (oldLocation.y - updatedCar.location.y)))
+  t.not(updatedCar.updatedAt, updatedAt);
+  t.deepEqual(Object.keys(car).sort(), HelperFunctions.carAttributes().sort());
+})
+
 test('inability to update created at', async t => {
   const car         = new Car(HelperFunctions.carParams());
   const {updatedAt} = car
