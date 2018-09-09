@@ -129,8 +129,8 @@ class Demand {
   }
 
   validateTime(pickupTime, dropoffTime) {
-    if(isNaN(pickupTime.getTime()) || isNaN(dropoffTime).getTime)
-      this.errors.push("times should be in that form: [Month name] [day], [year] [hours]:[minutes]");
+    if(isNaN(pickupTime.getTime()) || isNaN(dropoffTime.getTime()))
+      this.errors.push("times should be in that form: [Month name] [day] [year] [hours]:[minutes]");
     else if(pickupTime > dropoffTime)
       this.errors.push("dropoff time cant be before pickup time");
   }
