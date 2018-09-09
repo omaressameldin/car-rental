@@ -152,7 +152,7 @@ class Car {
     } else {
       const xDifference     = (this.location.x - this.oldLocation.x);
       const yDifference     = (this.location.y - this.oldLocation.y);
-      this.traveledDistance = Math.sqrt(xDifference * xDifference + yDifference * yDifference);
+      this.traveledDistance = this.traveledDistance + Math.sqrt(xDifference * xDifference + yDifference * yDifference);
     }
 
     delete this.oldLocation;
