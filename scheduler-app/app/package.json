@@ -1,0 +1,20 @@
+{
+  "name": "scheduler-app",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "npm install && micro",
+    "test": "ava tests/**/*.test*",
+    "dev": "npm install && node --inspect node_modules/.bin/micro-dev"
+  },
+  "devDependencies": {
+    "ava": "1.0.0-beta.8",
+    "micro-dev": "3.0.0"
+  },
+  "dependencies": {
+    "axios": "0.18.0",
+    "micro": "9.3.3",
+    "microrouter": "3.1.2"
+  }
+}
