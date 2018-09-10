@@ -42,6 +42,20 @@ services:
     ports:
       - "15002:3000"       
     command: npm run dev
+  reply-concept-scheduler:
+    container_name: scheduler-app
+    build: ./scheduler-app/.
+    image: scheduler-app
+    restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: 100k     
+    volumes:
+      - ./scheduler-app/app:/usr/src/app  
+    ports:
+      - "15003:3000"       
+    command: npm run dev
   reply-concept-simulator:
     container_name: simulator-app
     build: ./simulator-app/.
@@ -68,5 +82,5 @@ services:
     volumes:
       - ./dashboard-app/app:/usr/src/app  
     ports:
-      - "15003:3000"       
+      - "15004:3000"       
     command: npm start 
