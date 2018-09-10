@@ -56,7 +56,7 @@
     - PATCH [localhost:15002/demands/{_id}](http://localhost:15002/demands/:id)
     - DELETE [localhost:15002/demands/{_id}](http://localhost:15002/demands/:id)
 - the **simulator app** is running in the background and if you go to [localhost:15004](http://localhost:15004) you will see a representation of the cars
-- The **scheduler-app** [localhost:15003/schedule](http://localhost:15003/schedule) runs a demo of how scheduling should be done but it does not get the current demands and cars just runs on an example
+- The **scheduler-app** [localhost:15003/schedule](http://localhost:15003/schedule)  gives you a schedule of available cars and demands if possible
 
 ## RUNNING tests
 To run tests for any of the services:
@@ -64,6 +64,4 @@ To run tests for any of the services:
 - run `npm test`
 
 ## Missing:
-- right now the **scheduler-app** is only workign on dummy data
 - missing validation for when deleting a user to check for demands
-- umls
