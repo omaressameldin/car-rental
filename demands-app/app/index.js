@@ -15,8 +15,8 @@ function demandParams(body) {
 }
 
 module.exports = router(
-  get('/demands', async (_, res) => {
-    await sendOutput(res, () =>{ return {demands: Demand.all()} });
+  get('/demands', async (req, res) => {
+    await sendOutput(res, () =>{ return {demands: Demand.all().filter((demand) => !req.query.userID || demand.userID == req.query.userID)} });
   }),
 
   get('/demands/:id', async (req, res) => {
