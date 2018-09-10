@@ -64,6 +64,6 @@ To run tests for any of the services:
 - run `npm test`
 
 ## Missing:
-- right now the **scheduler-app** is not yet complete so it's not committed yet!
+- right now the **scheduler-app** is only workign on dummy data
 - missing validation for when deleting a user to check for demands
 - umls
