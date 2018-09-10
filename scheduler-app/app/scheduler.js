@@ -12,7 +12,12 @@ class Scheduler {
       infotainmentSystem === demand.infotainmentSystem && issLeatherInterior === demand.issLeatherInterior
   }
 
-  static isCarAvailable(car, demand, matchings) {
+  static isCarAvailable(car, demand, bookedTimes) {
+    const carBookings = bookedTimes[car._id];
+    carBookings.forEach(booking => {
+      if(new Date(booking.pickupTime) <= new Date(demand.pickupTime) && new Date(booking.dropoffTime) >= new Date(demand.dropoffTime))
+        return false;
+    });
     return true;
   }
 
@@ -20,12 +25,16 @@ class Scheduler {
     if (demandsIndex == demands.length) {
       return matchingsDistanceObject;
     }
-
-    const distanceIfTaken    = Scheduler.calculateDistance({x: demands[demandsIndex].pickupLocation.xPickup, y: demands[demandsIndex].pickupLocation.yPickup} , remainingCars[carsIndex].location);
+    const car                = remainingCars[carsIndex];
+    const demand             = demands[demandsIndex];
+    const distanceIfTaken    = Scheduler.calculateDistance({x: demand.pickupLocation.xPickup, y: demand.pickupLocation.yPickup} , car.location);
     const newRemainingCars   = remainingCars.slice(0,carsIndex).concat(remainingCars.slice(carsIndex + 1));
-    const addedMatching      = {demand: demands[demandsIndex], car: remainingCars[carsIndex]};
-    const newMatchingsObject = {totalDistanceToPickup: matchingsDistanceObject.totalDistanceToPickup + distanceIfTaken, matchings: matchingsDistanceObject.matchings.concat(addedMatching)};
-    const canMatch           = Scheduler.doFeaturesMatch(remainingCars[carsIndex], demands[demandsIndex]) && Scheduler.isCarAvailable(remainingCars[carsIndex], demands[demandsIndex], matchingsDistanceObject);
+    const addedMatching      = {demand, car};
+    const bookedTimes        = matchingsDistanceObject.bookedTimes;
+    const canMatch           = Scheduler.doFeaturesMatch(car, demand) && Scheduler.isCarAvailable(car, demand, bookedTimes);
+    const newCarBookedTimes  = bookedTimes[car._id].concat({pickupTime: demand.pickupTime, dropoffTime: demand.dropoffTime});
+    const newMatchingsObject = {totalDistanceToPickup: matchingsDistanceObject.totalDistanceToPickup + distanceIfTaken,
+      matchings: matchingsDistanceObject.matchings.concat(addedMatching), bookedTimes: {...bookedTimes, [car._id]: newCarBookedTimes}};    
 
     if(remainingCars.length - 1 === carsIndex) {
       if(canMatch) {
@@ -38,8 +47,7 @@ class Scheduler {
     }
     let canTake  = canMatch;
     let canLeave = true;
-    let matchingsIfTaken ;
-    let matchingsIfNotTaken;
+    let matchingsIfTaken, matchingsIfNotTaken;
     
     if(canMatch) {
       try {
@@ -64,19 +72,31 @@ class Scheduler {
     } else if(canLeave) {
       return matchingsIfNotTaken
     } else {
-      throw("Can not schedule the cars!")
+      throw("Can not schedule the cars!");
     }
 
   }
 
     constructor() {
-    const cars    = [{location: {x: 1, y: 2}}, {location: {x: 2, y: 2}, model: "BMW"}];
-    const demands = [{model: "BMW", pickupLocation: {xPickup: 1.6, yPickup: 2 }, dropoffLocation: {xDropoff: 1.6 , yDropoff: 3}}, {pickupLocation: {xPickup: 2, yPickup: 2.5 }, dropoffLocation: {xDropoff: 2 , yDropoff: 3.5}}];      
-    if(cars.length < demands.length) {
-      throw new Error("cant make a schedule need more cars!")
-    }
+      return (async () => {
+        let cars, demands;
 
-    this.matchings = Scheduler.getBestMatching(demands, cars, 0, 0, {totalDistanceToPickup: 0, matchings: []});
+        try {
+          demands = (await axios.get(`http://demands-app:3000/demands`)).data.demands;
+          cars    = (await axios.get(`http://cars-app:3000/cars`)).data.cars;
+        } catch (errorResponse) {
+          this.errors.push(...errorResponse.response.data.errors);
+        }
+
+        if(cars.length < demands.length) {
+          throw new Error("cant make a schedule need more cars!")
+        }
+        const bookedTimes = cars.reduce((bookedTimes, car) =>  ({...bookedTimes, [car._id]: []}), {} );
+        this.matchings = Scheduler.getBestMatching(demands, cars, 0, 0, {totalDistanceToPickup: 0, matchings: [], bookedTimes});
+        console.log(this);
+        return this;
+      })();
+
   }
 }
 

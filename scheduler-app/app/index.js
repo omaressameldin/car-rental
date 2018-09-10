@@ -2,16 +2,16 @@ const { router, get } = require('microrouter');
 const {  send }       = require('micro');
 const { Scheduler }   = require('./scheduler.js');
 
-function sendOutput(res, fn) {
+async function sendOutput(res, fn) {
   try {
-    send(res, 200, fn());
+    send(res, 200, await fn());
   } catch (err) {
     send(res, 422, {errors: err})
   }
 }
 
 module.exports = router(
-  get('/schedule', (_, res) => {
-    sendOutput(res, () =>{ return {schedule: new Scheduler()} });
+  get('/schedule', async (_, res) => {
+    await sendOutput(res, async () =>{ return {schedule: await new Scheduler()} });
   }),
 );
