@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 let usersDB = [];
 let idList  = new Set();
 
@@ -24,12 +26,14 @@ class User {
     return user;
   }
 
-  static deleteUser(id) {
+  static async deleteUser(id) {
+    const demands = (await axios.get(`http://demands-app:3000/demands?userID=${id}`)).data.demands;
+    if(demands.length)
+    throw new Error(["can not delete a user that has a demand"]);
     const orignalLength = usersDB.length;
-
     usersDB = usersDB.filter((user) => user._id !== id);
     if(orignalLength === usersDB.length)
-      throw new Error(["can not find user with that id"]);
+    throw new Error(["can not find user with that id"]);
   }
 
   static all() {
