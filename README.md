@@ -62,6 +62,3 @@
 To run tests for any of the services:
 - go to a container using `docker exec -it [app_name] sh`
 - run `npm test`
-
-## Missing:
-- missing validation for when deleting a user to check for demands
