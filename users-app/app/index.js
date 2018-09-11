@@ -2,9 +2,9 @@ const { json, send }                    = require('micro');
 const { router, get, post, patch, del } = require('microrouter');
 const { User }                          = require('./user.js');
 
-function sendOutput(res, fn) {
+async function sendOutput(res, fn) {
   try {
-    send(res, 200, fn());
+    send(res, 200, await fn());
   } catch (err) {
     send(res, 422, {errors: err.message.split(",")})
   }
@@ -34,6 +34,6 @@ module.exports = router(
   }),
 
   del('/users/:id', async (req, res) => {
-    sendOutput(res, () => User.deleteUser(req.params.id));
+    await sendOutput(res, async () => await User.deleteUser(req.params.id));
   })
 );
