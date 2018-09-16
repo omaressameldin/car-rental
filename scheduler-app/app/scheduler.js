@@ -15,7 +15,9 @@ class Scheduler {
   static isCarAvailable(car, demand, bookedTimes) {
     const carBookings = bookedTimes[car._id];
     carBookings.forEach(booking => {
-      if(new Date(booking.pickupTime) <= new Date(demand.pickupTime) && new Date(booking.dropoffTime) >= new Date(demand.dropoffTime))
+      if((new Date(booking.pickupTime) <= new Date(demand.pickupTime) && new Date(booking.dropoffTime) >= new Date(demand.pickupTime)) ||
+        new Date(booking.pickupTime) <= new Date(demand.dropoffTime) && new Date(booking.dropoffTime) >= new Date(demand.dropoffTime)
+      ))
         return false;
     });
     return true;
@@ -28,7 +30,6 @@ class Scheduler {
     const car                = remainingCars[carsIndex];
     const demand             = demands[demandsIndex];
     const distanceIfTaken    = Scheduler.calculateDistance({x: demand.pickupLocation.xPickup, y: demand.pickupLocation.yPickup} , car.location);
-    const newRemainingCars   = remainingCars.slice(0,carsIndex).concat(remainingCars.slice(carsIndex + 1));
     const addedMatching      = {demand, car};
     const bookedTimes        = matchingsDistanceObject.bookedTimes;
     const canMatch           = Scheduler.doFeaturesMatch(car, demand) && Scheduler.isCarAvailable(car, demand, bookedTimes);
@@ -51,7 +52,7 @@ class Scheduler {
     
     if(canMatch) {
       try {
-        matchingsIfTaken = Scheduler.getBestMatching(demands, newRemainingCars, demandsIndex + 1, 0, newMatchingsObject);
+        matchingsIfTaken = Scheduler.getBestMatching(demands, remainingCars, demandsIndex + 1, 0, newMatchingsObject);
       } catch (error) {
         canTake = false;
       }
