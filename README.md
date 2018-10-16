@@ -76,3 +76,5 @@ To run tests for any of the services:
 - socket.io
 - ava
 - chart.js
+- docker
+- docker-compose
