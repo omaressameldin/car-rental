@@ -1,7 +1,14 @@
 # Readme
 
+## What this is
+- A car rental app
+- the app has services for adding/removing cars, demands and users (no front end for that part)
+- there is also a service for scheduling the cars according to the demands
+- there are also a simulator and dashboard apps where the simulator creates some cars and then starts moving them randomly and the dasboard shows the movements of the cars in the x and y dimensions
+
+
 ## How to use
-- install docker and docker-compose
+- install docker and docker-compose and make sure docker does not need sudo to run (`sudo groupadd docker` `sudo gpasswd -a $USER docker`)
 - once everything is installed use `docker ps` to make sure that docker is running
 - run `docker-compose up` at the root of the project to launch all services
 - once everything is running you'll have the apps running as follows:
@@ -62,3 +69,10 @@
 To run tests for any of the services:
 - go to a container using `docker exec -it [app_name] sh`
 - run `npm test`
+
+## Technologies used
+- node-js (micro)
+- react
+- socket.io
+- ava
+- chart.js
