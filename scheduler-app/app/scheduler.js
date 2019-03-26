@@ -8,7 +8,7 @@ class Scheduler {
   }
 
   static doFeaturesMatch({model, type, color, infotainmentSystem, issLeatherInterior}, demand) {
-    return model === demand.model && type === demand.type && color === demand.color && 
+    return model === demand.model && type === demand.type && color === demand.color &&
       infotainmentSystem === demand.infotainmentSystem && issLeatherInterior === demand.issLeatherInterior
   }
 
@@ -17,7 +17,7 @@ class Scheduler {
     carBookings.forEach(booking => {
       if((new Date(booking.pickupTime) <= new Date(demand.pickupTime) && new Date(booking.dropoffTime) >= new Date(demand.pickupTime)) ||
         new Date(booking.pickupTime) <= new Date(demand.dropoffTime) && new Date(booking.dropoffTime) >= new Date(demand.dropoffTime)
-      ))
+      )
         return false;
     });
     return true;
@@ -35,13 +35,13 @@ class Scheduler {
     const canMatch           = Scheduler.doFeaturesMatch(car, demand) && Scheduler.isCarAvailable(car, demand, bookedTimes);
     const newCarBookedTimes  = bookedTimes[car._id].concat({pickupTime: demand.pickupTime, dropoffTime: demand.dropoffTime});
     const newMatchingsObject = {totalDistanceToPickup: matchingsDistanceObject.totalDistanceToPickup + distanceIfTaken,
-      matchings: matchingsDistanceObject.matchings.concat(addedMatching), bookedTimes: {...bookedTimes, [car._id]: newCarBookedTimes}};    
+      matchings: matchingsDistanceObject.matchings.concat(addedMatching), bookedTimes: {...bookedTimes, [car._id]: newCarBookedTimes}};
 
     if(remainingCars.length - 1 === carsIndex) {
       if(canMatch) {
         if(demandsIndex === demands.length - 1) {
           return newMatchingsObject;
-        } 
+        }
       } else {
         throw new Error("this path does not work");
       }
@@ -49,7 +49,7 @@ class Scheduler {
     let canTake  = canMatch;
     let canLeave = true;
     let matchingsIfTaken, matchingsIfNotTaken;
-    
+
     if(canMatch) {
       try {
         matchingsIfTaken = Scheduler.getBestMatching(demands, remainingCars, demandsIndex + 1, 0, newMatchingsObject);
