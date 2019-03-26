@@ -9,7 +9,7 @@
     "dev": "node --inspect node_modules/.bin/micro-dev"
   },
   "devDependencies": {
-    "ava": "1.0.0-beta.8",
+    "ava": "^1.4.0",
     "micro-dev": "3.0.0"
   },
   "dependencies": {
