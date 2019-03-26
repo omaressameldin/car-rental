@@ -1,6 +1,6 @@
 version: "3"
 services:
-  reply-concept-users:
+  users-app:
     container_name: users-app
     build: ./users-app/.
     image: users-app
@@ -8,13 +8,13 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: 100k   
+        max-size: 100k
     volumes:
       - ./users-app/app:/usr/src/app
     ports:
-      - "15000:3000" 
-    command: npm run dev  
-  reply-concept-cars:
+      - "15000:3000"
+    command: /start.sh
+  cars-app:
     container_name: cars-app
     build: ./cars-app/.
     image: cars-app
@@ -22,13 +22,13 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: 100k     
+        max-size: 100k
     volumes:
       - ./cars-app/app:/usr/src/app
     ports:
-      - "15001:3000"       
-    command: npm start
-  reply-concept-demands:
+      - "15001:3000"
+    command: /start.sh
+  demands-app:
     container_name: demands-app
     build: ./demands-app/.
     image: demands-app
@@ -36,13 +36,13 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: 100k     
+        max-size: 100k
     volumes:
       - ./demands-app/app:/usr/src/app
     ports:
-      - "15002:3000"       
-    command: npm run dev
-  reply-concept-scheduler:
+      - "15002:3000"
+    command: /start.sh
+  scheduler-app:
     container_name: scheduler-app
     build: ./scheduler-app/.
     image: scheduler-app
@@ -50,13 +50,13 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: 100k     
+        max-size: 100k
     volumes:
-      - ./scheduler-app/app:/usr/src/app  
+      - ./scheduler-app/app:/usr/src/app
     ports:
-      - "15003:3000"       
-    command: npm run dev
-  reply-concept-simulator:
+      - "15003:3000"
+    command: /start.sh
+  simulator-app:
     container_name: simulator-app
     build: ./simulator-app/.
     image: simulator-app
@@ -64,13 +64,13 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: 100k       
-    depends_on: 
-      - reply-concept-cars
+        max-size: 100k
+    depends_on:
+      - cars-app
     volumes:
-      - ./simulator-app/app:/usr/src/app     
-    command: ["/wait-for-it.sh", "cars-app:3000", "--", "npm", "run", "start"]
-  reply-concept-dashboard:
+      - ./simulator-app/app:/usr/src/app
+    command: ["/wait-for-it.sh", "cars-app:3000", "--", "/start.sh"]
+  dashboard-app:
     container_name: dashboard-app
     build: ./dashboard-app/.
     image: dashboard-app
@@ -78,9 +78,9 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: 100k     
+        max-size: 100k
     volumes:
-      - ./dashboard-app/app:/usr/src/app  
+      - ./dashboard-app/app:/usr/src/app
     ports:
-      - "15004:3000"       
-    command: npm start 
+      - "15004:3000"
+    command: /start.sh
