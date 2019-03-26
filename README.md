@@ -8,8 +8,7 @@
 
 
 ## How to use
-- install docker and docker-compose and make sure docker does not need sudo to run (`sudo groupadd docker` `sudo gpasswd -a $USER docker`)
-- once everything is installed use `docker ps` to make sure that docker is running
+- make sure you have **docker version 18.x+** installed 
 - run `docker-compose up` at the root of the project to launch all services
 - once everything is running you'll have the apps running as follows:
   - **users-app**: [localhost:15000](http://localhost:15000) with crud capabilities
