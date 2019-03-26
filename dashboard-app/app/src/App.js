@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import socketIOClient       from "socket.io-client";
 import {Bar, Bubble}        from 'react-chartjs-2';
-import axios                from 'axios';
 
 class App extends Component {
 static dynamicColor() {
@@ -9,7 +8,7 @@ static dynamicColor() {
   const g = Math.floor(Math.random() * 255);
   const b = Math.floor(Math.random() * 255);
   return "rgb(" + r + "," + g + "," + b + ")";
-};  
+};
 
   constructor() {
     super();
@@ -19,15 +18,16 @@ static dynamicColor() {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { endpoint } = this.state;
     const socket       = socketIOClient(endpoint);
+    const response     = await fetch(`http://localhost:15001/cars`);
+    const data     = await response.json();
+    console.log(data)
 
-      axios.get(`http://localhost:15001/cars`).then(({data}) => {
-        this.setState({
-          cars: data.cars.map((car) => ({...car, bColor: App.dynamicColor()}))
-        })
-      })
+    this.setState({
+      cars: data.cars.map((car) => ({...car, bColor: App.dynamicColor()}))
+    })
 
     socket.on("CarUpdated", ({_id, location, traveledDistance}) => {
       this.setState((state) => {
@@ -37,16 +37,16 @@ static dynamicColor() {
 
         return {cars};
       });
-    });
+    })
 
     socket.on("CarCreated", newCar => {
       this.setState((state) => ({cars: [...state.cars, {...newCar, bColor: App.dynamicColor()}]}));
-    });    
+    });
   }
 
   render() {
     const {cars} = this.state
-    if(!cars.length) return  (<p style={{ textAlign: "center" }}>Loading...</p>); 
+    if(!cars.length) return  (<p style={{ textAlign: "center" }}>Loading...</p>);
 
     const distanceData = {
       labels: cars.map(({_id}) => _id),
@@ -69,7 +69,7 @@ static dynamicColor() {
           ticks: {
               beginAtZero:true,
               min: 0,
-              max: 100    
+              max: 100
           }
         }]
       }
@@ -113,24 +113,24 @@ static dynamicColor() {
         />
 
         <h2 style={{ textAlign: "center" }}>Car Postiions</h2>
-        <Bubble 
+        <Bubble
           width={100}
-          height={25}   
+          height={25}
           options={
           {
             tooltips: {
               mode: 'label',
               callbacks: {
-          
+
                   beforeLabel: (tooltipItem, data) => {
                       return data.labels[tooltipItem.index];
                   },
               },
-          }            
-          }            
-          }     
-          data={positionData} 
-        />  
+          }
+          }
+          }
+          data={positionData}
+        />
       </div>
     )
   }
